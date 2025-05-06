@@ -5,13 +5,12 @@ from pathlib import Path
 CSV = sorted(Path("data/raw").glob("bls_unemployment_*.csv"))[-1]
 df  = pd.read_csv(CSV)
 
-# keep only the columns we created in the table
+# restrict only to these cols
 cols = ["series_id", "year", "period", "value", "footnotes", "date"]
 df = df[cols]
 
-# ---- NEW LINE: cast to true date ------- #
+# ---- confirm entry as date instead of string ------- #
 df["date"] = pd.to_datetime(df["date"]).dt.date
-# ---------------------------------------- #
 
 eng = create_engine(
     "postgresql+psycopg://graduser:gradpass@localhost:5432/grads",
